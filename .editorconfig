@@ -1,0 +1,74 @@
+﻿[*.cs]
+
+# CA1062
+dotnet_code_quality.CA1062.exclude_extension_method_this_parameter = true
+dotnet_code_quality.CA1062.null_check_validation_methods = NotNull|NotNullOrEmpty
+
+# CA1710: Identifiers should have correct suffix
+dotnet_diagnostic.CA1710.severity = silent
+
+# CA1028: Enum Storage should be Int32
+dotnet_diagnostic.CA1028.severity = silent
+
+# SA1309: Field names should not begin with underscore
+dotnet_diagnostic.SA1309.severity = none
+
+# SA1101: Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+
+# SA1124: Do not use regions
+dotnet_diagnostic.SA1124.severity = none
+
+# SA1503: Braces should not be omitted
+dotnet_diagnostic.SA1503.severity = none
+
+# SA1200: Using directives should be placed correctly
+dotnet_diagnostic.SA1200.severity = none
+
+# SA1313: Parameter names should begin with lower-case letter
+dotnet_diagnostic.SA1313.severity = none
+
+# CA1305: Specify IFormatProvider
+dotnet_diagnostic.CA1305.severity = none
+
+# SA1401: Fields should be private
+dotnet_diagnostic.SA1401.severity = none
+
+# CA1051: Do not declare visible instance fields
+dotnet_diagnostic.CA1051.severity = none
+
+# SA1636: File header copyright text should match
+dotnet_diagnostic.SA1636.severity = silent
+
+# SA1113: Comma should be on the same line as previous parameter
+dotnet_diagnostic.SA1113.severity = none
+
+# SA1001: Commas should be spaced correctly
+dotnet_diagnostic.SA1001.severity = none
+
+# SA1123: Do not place regions within elements
+dotnet_diagnostic.SA1123.severity = none
+
+# CA1303: Do not pass literals as localized parameters
+dotnet_diagnostic.CA1303.severity = none
+
+# SA1407: Arithmetic expressions should declare precedence
+dotnet_diagnostic.SA1407.severity = none
+
+# SA1117: Parameters should be on same line or separate lines
+dotnet_diagnostic.SA1117.severity = silent
+
+# CA1810: Initialize reference type static fields inline
+dotnet_diagnostic.CA1810.severity = none
+
+# CA1034: Nested types should not be visible
+dotnet_diagnostic.CA1034.severity = none
+
+# CA2211: Non-constant fields should not be visible
+dotnet_diagnostic.CA2211.severity = silent
+
+# CA1801 Remove unused parameter
+dotnet_diagnostic.CA1801.severity = silent
+
+# SA1310: Field names should not contain underscore
+dotnet_diagnostic.SA1310.severity = silent

@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(SolutionDir)SolutionItems\CustomStyleCopRules.props" Condition="Exists('$(SolutionDir)SolutionItems\CustomStyleCopRules.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B08984E0-C241-4FEE-B9A1-FFF9ADEF5BB2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AwesomeInventory.Base</RootNamespace>
+    <AssemblyName>AwesomeInventory.Base</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>false</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\AwesomeInventory\Common\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>G:\SteamLibrary\steamapps\common\RimWorld\Mods\AwesomeInventory\Common\Assemblies\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>false</DebugSymbols>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exceptions\ArgumentEmtpyException.cs" />
+    <Compile Include="Interfaces\IReset.cs" />
+    <Compile Include="Resources\ErrorText.cs" />
+    <Compile Include="Resources\RangedWeaponStatsString.cs" />
+    <Compile Include="Services\AIDebug.cs" />
+    <Compile Include="Services\AwesomeInventoryServiceProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\UIText.cs" />
+    <Compile Include="Interfaces\ILogger.cs" />
+    <Compile Include="Services\Plugin.cs" />
+    <Compile Include="Services\Timer.cs" />
+    <Compile Include="Utilities\ValidateArg.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <PackageReference Include="Krafs.Rimworld.Ref">
+      <Version>1.3.3087</Version>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)SolutionItems\GlobalEditorFiles.props" Condition="Exists('$(SolutionDir)SolutionItems\GlobalEditorFiles.props')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+            call "$(SolutionDir)SolutionItems\Deploy.bat" "$(ProjectDir)" "$(OutDir)" $(Configuration)
+            xcopy /i /e /d /y "$(SolutionDir)src\About" "$(OutDir)..\..\About"
+        </PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="CopyLoadFolderXML" AfterTargets="Build">
+    <Copy SourceFiles="$(SolutionDir)src\LoadFolders.xml" DestinationFiles="$(OutDir)..\..\LoadFolders.xml" SkipUnchangedFiles="false">
+    </Copy>
+  </Target>
+  <Target Name="CopyRimWorldUtility" AfterTargets="Build">
+    <Copy Condition=" '$(Configuration)'=='debug' " SourceFiles="C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AwsomeInventory\References\NotooShabby.RimWorldUtility.dll" DestinationFiles="$(OutDir)NotooShabby.RimWorldUtility.dll">
+    </Copy>
+    <Copy Condition=" '$(Configuration)'!='debug' " SourceFiles="C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AwsomeInventory\References\NotooShabby.RimWorldUtility.dll" DestinationFiles="$(OutDir)NotooShabby.RimWorldUtility.dll">
+    </Copy>
+  </Target>
+</Project>
