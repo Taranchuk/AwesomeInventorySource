@@ -21,7 +21,7 @@ namespace AwesomeInventory.Loadout
         /// </summary>
         /// <param name="pawn"> Pawn to check. </param>
         /// <returns> Returns true if <paramref name="pawn"/>'s inventory needs to restock. </returns>
-        protected override bool Satisfied(Pawn pawn)
+        public override bool Satisfied(Pawn pawn)
         {
             ValidateArg.NotNull(pawn, nameof(pawn));
 

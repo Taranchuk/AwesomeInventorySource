@@ -49,14 +49,14 @@ namespace AwesomeInventory.UI
 
         private Dictionary<Thing, Tuple<string, string>> _thingTooltipCache = new Dictionary<Thing, Tuple<string, string>>();
         private Dictionary<Pawn, List<Tuple<Trait, string>>> _traitCache = new Dictionary<Pawn, List<Tuple<Trait, string>>>();
-        private AwesomeInventoryTabBase _gearTab;
+        private ITab_Pawn_Gear _gearTab;
         private DrawHelper _drawHelper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawGearTabWorker"/> class.
         /// </summary>
         /// <param name="gearTab"> The gear tab it draws on. </param>
-        public DrawGearTabWorker(AwesomeInventoryTabBase gearTab)
+        public DrawGearTabWorker(ITab_Pawn_Gear gearTab)
         {
             _gearTab = gearTab;
         }
@@ -661,7 +661,7 @@ namespace AwesomeInventory.UI
 
                     Rect unloadButtonRect = new Rect(row.FinalX - GenUI.SmallIconSize, row.FinalY, GenUI.SmallIconSize, GenUI.ListSpacing);
 
-                    if (_gearTab.IsColonistPlayerControlled())
+                    if (_gearTab.SelPawnForGear.IsColonistPlayerControlled)
                     {
                         // Draw unload now button
                         TooltipHandler.TipRegion(unloadButtonRect, UIText.UnloadNow.TranslateSimple());
@@ -973,7 +973,7 @@ namespace AwesomeInventory.UI
                 Widgets.InfoCardButton(rect.x, rect.y, thing);
 
                 // Draw Unload Now button
-                if (this.ShowDropButton(selPawn, thing, false, out bool canDrop, out _) && canDrop && _gearTab.IsColonistPlayerControlled())
+                if (this.ShowDropButton(selPawn, thing, false, out bool canDrop, out _) && canDrop && _gearTab.SelPawnForGear.IsColonistPlayerControlled)
                 {
                     TooltipHandler.TipRegion(buttonRect, UIText.UnloadNow.Translate());
                     if (UnloadNowUtility.ThingInQueue(selPawn, thing))

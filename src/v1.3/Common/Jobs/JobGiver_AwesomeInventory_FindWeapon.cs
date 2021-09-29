@@ -27,7 +27,7 @@ namespace AwesomeInventory.Jobs
         /// </summary>
         /// <param name="pawn"> Pawn that will be assigned a job to. </param>
         /// <returns> A job assigned to <paramref name="pawn"/>. </returns>
-        protected override Job TryGiveJob(Pawn pawn)
+        public override Job TryGiveJob(Pawn pawn)
         {
 #if DEBUG
             ValidateArg.NotNull(pawn, nameof(pawn));

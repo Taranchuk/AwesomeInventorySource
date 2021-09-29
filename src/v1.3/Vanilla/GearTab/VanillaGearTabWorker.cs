@@ -3,6 +3,7 @@
 // Licensed under the GPL-3.0-only license. See LICENSE.md file in the project root for full license information.
 // </copyright>
 
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace AwesomeInventory.UI
 {
     public class VanillaGearTabWorker : DrawGearTabWorker
     {
-        public VanillaGearTabWorker(AwesomeInventoryTab gearTab)
+        public VanillaGearTabWorker(ITab_Pawn_Gear gearTab)
             : base(gearTab)
         {
         }

@@ -7,18 +7,19 @@ using System;
 
 namespace AwesomeInventory.UI
 {
-    /// <inheritdoc/>
-    [RegisterService(typeof(AwesomeInventoryTabBase), typeof(AwesomeInventoryTab))]
-    public class AwesomeInventoryTab : AwesomeInventoryTabBase
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AwesomeInventoryTab"/> class.
-        /// </summary>
-        [Obsolete(ErrorText.NoDirectCall, false)]
-        public AwesomeInventoryTab()
-            : base()
-        {
-            _drawGearTab = new VanillaGearTabWorker(this);
-        }
-    }
+    //TODO FIX
+    ///// <inheritdoc/>
+    //[RegisterService(typeof(AwesomeInventoryTabBase), typeof(AwesomeInventoryTab))]
+    //public class AwesomeInventoryTab : AwesomeInventoryTabBase
+    //{
+    //    /// <summary>
+    //    /// Initializes a new instance of the <see cref="AwesomeInventoryTab"/> class.
+    //    /// </summary>
+    //    [Obsolete(ErrorText.NoDirectCall, false)]
+    //    public AwesomeInventoryTab()
+    //        : base()
+    //    {
+    //        _drawGearTab = new VanillaGearTabWorker(this);
+    //    }
+    //}
 }

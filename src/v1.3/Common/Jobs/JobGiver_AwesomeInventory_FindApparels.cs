@@ -24,7 +24,7 @@ namespace AwesomeInventory.Jobs
         /// </summary>
         /// <param name="pawn"> The pawn in question. </param>
         /// <returns> A 9 to 5 job. </returns>
-        protected override Job TryGiveJob(Pawn pawn)
+        public override Job TryGiveJob(Pawn pawn)
         {
             ValidateArg.NotNull(pawn, nameof(pawn));
 #if DEBUG

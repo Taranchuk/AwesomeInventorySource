@@ -320,14 +320,15 @@ namespace AwesomeInventory.Loadout
             {
                 if (Find.Selector.SingleSelectedThing is Pawn pawn)
                 {
-                    if (AwesomeInventoryServiceProvider.TryGetImplementation<AwesomeInventoryTabBase>(out AwesomeInventoryTabBase tab))
-                    {
-                        if (tab.IsVisible)
-                        {
-                            ToggleGearTab toggleGearTab = new ToggleGearTab(tab.GetType());
-                            yield return toggleGearTab;
-                        }
-                    }
+                    // TODO FIX
+                    //if (AwesomeInventoryServiceProvider.TryGetImplementation<AwesomeInventoryTabBase>(out AwesomeInventoryTabBase tab))
+                    //{
+                    //    if (tab.IsVisible)
+                    //    {
+                    //        ToggleGearTab toggleGearTab = new ToggleGearTab(tab.GetType());
+                    //        yield return toggleGearTab;
+                    //    }
+                    //}
                 }
             }
 

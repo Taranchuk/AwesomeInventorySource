@@ -11,17 +11,18 @@ using System.Threading.Tasks;
 
 namespace AwesomeInventory.UI
 {
-    /// <inheritdoc/>
-    [RegisterService(typeof(AwesomeInventoryTabBase), typeof(AwesomeInventoryTab))]
-    public class AwesomeInventoryTab : AwesomeInventoryTabBase
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AwesomeInventoryTab"/> class.
-        /// </summary>
-        [Obsolete(ErrorText.NoDirectCall, false)]
-        public AwesomeInventoryTab()
-        {
-            _drawGearTab = new CEDrawGearTabWorker(this);
-        }
-    }
+    // TODO FIX
+    ///// <inheritdoc/>
+    //[RegisterService(typeof(AwesomeInventoryTabBase), typeof(AwesomeInventoryTab))]
+    //public class AwesomeInventoryTab : AwesomeInventoryTabBase
+    //{
+    //    /// <summary>
+    //    /// Initializes a new instance of the <see cref="AwesomeInventoryTab"/> class.
+    //    /// </summary>
+    //    [Obsolete(ErrorText.NoDirectCall, false)]
+    //    public AwesomeInventoryTab()
+    //    {
+    //        _drawGearTab = new CEDrawGearTabWorker(this);
+    //    }
+    //}
 }

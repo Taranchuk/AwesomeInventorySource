@@ -31,7 +31,7 @@ namespace AwesomeInventory.Jobs
         /// Make detailed instruction on how to do the job.
         /// </summary>
         /// <returns> Instructions on what to do. </returns>
-        protected override IEnumerable<Toil> MakeNewToils()
+        public override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDestroyedOrNull(TargetIndex.A);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.A);

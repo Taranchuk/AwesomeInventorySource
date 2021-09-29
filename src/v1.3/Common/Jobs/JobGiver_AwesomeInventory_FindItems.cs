@@ -26,7 +26,7 @@ namespace AwesomeInventory.Jobs
         /// </summary>
         /// <param name="pawn"> Pawn for the job. </param>
         /// <returns> A job to stock up items in <see cref="AwesomeInventoryLoadout"/>. </returns>
-        protected override Job TryGiveJob(Pawn pawn)
+        public override Job TryGiveJob(Pawn pawn)
         {
             ValidateArg.NotNull(pawn, nameof(pawn));
 

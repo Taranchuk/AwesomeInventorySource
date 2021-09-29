@@ -41,7 +41,7 @@ namespace AwesomeInventory.Jobs
         /// Make instruction on what to do.
         /// </summary>
         /// <returns> A list of instruction. </returns>
-        protected override IEnumerable<Toil> MakeNewToils()
+        public override IEnumerable<Toil> MakeNewToils()
         {
             yield return new Toil()
             {

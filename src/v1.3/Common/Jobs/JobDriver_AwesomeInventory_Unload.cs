@@ -125,7 +125,7 @@ namespace AwesomeInventory.Jobs
         /// Give instructions on how to do job.
         /// </summary>
         /// <returns> A list of instructions. </returns>
-        protected override IEnumerable<Toil> MakeNewToils()
+        public override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDestroyedOrNull(TargetIndex.A);
             this.FailOnBurningImmobile(TargetIndex.B);

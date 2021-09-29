@@ -23,7 +23,7 @@ namespace AwesomeInventory.UI
         /// Initializes a new instance of the <see cref="CEDrawGearTabWorker"/> class.
         /// </summary>
         /// <param name="awesomeInventoryTab"> Gear tab to draw. </param>
-        public CEDrawGearTabWorker(AwesomeInventoryTab awesomeInventoryTab)
+        public CEDrawGearTabWorker(ITab_Pawn_Gear awesomeInventoryTab)
             : base(awesomeInventoryTab)
         {
         }

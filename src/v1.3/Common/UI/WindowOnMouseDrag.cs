@@ -42,7 +42,7 @@ namespace RPG_Inventory_Remake_Common
 
 
 
-        protected override float Margin => 0f;
+        public override float Margin => 0f;
 
         public override void PostOpen()
         {
