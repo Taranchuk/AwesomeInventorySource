@@ -9,12 +9,36 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AwesomeInventory.UI;
 using CombatExtended;
 using HarmonyLib;
+using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace AwesomeInventory.HarmonyPatches
 {
+    [StaticConstructorOnStartup]
+    public static class RPG_Inventory_CEPatch
+    {
+        static RPG_Inventory_CEPatch()
+        {
+            MethodInfo original = AccessTools.Method("Sandy_Detailed_RPG_GearTab:FillTab");
+            MethodInfo postfix = AccessTools.Method(typeof(RPG_Inventory_CEPatch), "Postfix");
+            Utility.Harmony.Patch(original, null, new HarmonyMethod(postfix));
+        }
+
+        public static Dictionary<Pawn, CEDrawGearTabWorker> workers = new Dictionary<Pawn, CEDrawGearTabWorker>();
+        public static void Postfix(ITab_Pawn_Gear __instance)
+        {
+            if (!workers.TryGetValue(__instance.SelPawnForGear, out var worker))
+            {
+                workers[__instance.SelPawnForGear] = worker = new CEDrawGearTabWorker(__instance);
+            }
+            var rect = new Rect(0f, 20f, __instance.size.x, __instance.size.y - 20f).ContractedBy(10f);
+            worker.DrawJealous(__instance.SelPawnForGear, rect, true);
+        }
+    }
     /// <summary>
     /// Skip this job when pawn has a loadout.
     /// </summary>

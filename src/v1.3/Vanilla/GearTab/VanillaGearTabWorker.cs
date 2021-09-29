@@ -14,8 +14,7 @@ namespace AwesomeInventory.UI
 {
     public class VanillaGearTabWorker : DrawGearTabWorker
     {
-        public VanillaGearTabWorker(ITab_Pawn_Gear gearTab)
-            : base(gearTab)
+        public VanillaGearTabWorker(ITab_Pawn_Gear gearTab) : base(gearTab)
         {
         }
     }

@@ -90,7 +90,6 @@
     <Compile Include="HarmonyPatches\Pawn_InventoryTracker_FirstUnloadableThing_Patch.cs" />
     <Compile Include="HarmonyPatches\Pawn_JobTracker_CleanQueuedJobs.cs" />
     <Compile Include="HarmonyPatches\ThingOwner_RPGI_Patch.cs" />
-    <Compile Include="HarmonyPatches\Thing_GetInspectTabs_Patch.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Interfaces\IInventoryHelper.cs" />
     <Compile Include="Jobs\DressJob.cs" />
@@ -316,7 +315,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Krafs.Rimworld.Ref">
-      <Version>1.3.3087</Version>
+      <Version>1.3.3136-beta</Version>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
       <Version>2.1.1</Version>

@@ -18,6 +18,28 @@ using Verse.AI;
 
 namespace AwesomeInventory.HarmonyPatches
 {
+    [StaticConstructorOnStartup]
+    public static class RPG_Inventory_Patch
+    {
+        static RPG_Inventory_Patch()
+        {
+            MethodInfo original = AccessTools.Method("Sandy_Detailed_RPG_GearTab:FillTab");
+            MethodInfo postfix = AccessTools.Method(typeof(RPG_Inventory_Patch), "Postfix");
+            Utility.Harmony.Patch(original, null, new HarmonyMethod(postfix));
+        }
+
+        public static Dictionary<Pawn, VanillaGearTabWorker> workers = new Dictionary<Pawn, VanillaGearTabWorker>();
+        public static void Postfix(ITab_Pawn_Gear __instance)
+        {
+            if (!workers.TryGetValue(__instance.SelPawnForGear, out var worker))
+            {
+                workers[__instance.SelPawnForGear] = worker = new VanillaGearTabWorker(__instance);
+            }
+            var rect = new Rect(0f, 20f, __instance.size.x, __instance.size.y - 20f).ContractedBy(10f);
+            worker.DrawJealous(__instance.SelPawnForGear, rect, true);
+        }
+    }
+
     /// <summary>
     /// Add pick up option to context menu when right click things on the ground.
     /// </summary>

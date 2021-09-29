@@ -74,7 +74,6 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="GearTab\AwesomeInventoryTab.cs" />
     <Compile Include="GearTab\VanillaGearTabWorker.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HarmonyPatches\AddPickupOption.cs" />
@@ -113,6 +112,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Krafs.Publicizer">
+      <Version>1.0.1</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Krafs.Rimworld.Ref">
       <Version>1.3.3087</Version>
     </PackageReference>
@@ -154,6 +158,9 @@ del $(Outdir)0Harmony.dll</PostBuildEvent>
       <_Temporary Remove="@(_Temporary)" />
     </ItemGroup>
   </Target>
+  <ItemGroup>
+    <Publicize Include="Assembly-CSharp" />
+  </ItemGroup>
   <!-- Import AwesomeInventory configs for IDE -->
   <Import Project="$(SolutionDir)SolutionItems\GlobalEditorFiles.props" Condition="Exists('$(SolutionDir)SolutionItems\GlobalEditorFiles.props')" />
 </Project>

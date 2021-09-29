@@ -91,7 +91,7 @@ namespace AwesomeInventory.UI
         public virtual void DrawAscetic()
         {
         }
-
+        private readonly StatPanelToggle _statPanelToggle = new StatPanelToggle();
         /// <inheritdoc/>
         [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Bug in style cop.")]
         public virtual void DrawJealous(Pawn selPawn, Rect canvas, bool apparelChanged)
@@ -105,143 +105,27 @@ namespace AwesomeInventory.UI
 
             // start drawing the view
             Text.Font = GameFont.Small;
-            Widgets.BeginScrollView(outRect, ref _scrollPosition, viewRect);
 
-            // draw all stats on the right
-            Rect statRect = viewRect.RightPart(_divider);
-            this.DrawStatPanel(statRect, selPawn, out float statY, apparelChanged);
-
-            // Draw paper doll.
-            Rect pawnRect = new Rect(new Vector2(statRect.x + GenUI.GapSmall, statY), PaperDollSize);
-            Utility.DrawColonist(pawnRect, selPawn);
-
-        #region Weapon
-
-            // TODO take a look at how shield is equipped.
-            SmartRect<ThingWithComps> rectForEquipment =
-                new SmartRect<ThingWithComps>(
-                    template: new Rect(statRect.x, pawnRect.yMax, _apparelRectWidth, _apparelRectHeight),
-                    selector: (thing) => { return true; },
-                    xLeftCurPosition: pawnRect.x,
-                    xRightCurPosition: pawnRect.x,
-                    list: null,
-                    xLeftEdge: pawnRect.x,
-                    xRightEdge: outRect.xMax - GenUI.ScrollBarWidth);
-
-            SmartRectList<ThingWithComps> equipementRectList = new SmartRectList<ThingWithComps>();
-            equipementRectList.Init(rectForEquipment);
-
-            if (Utility.ShouldShowEquipment(selPawn))
+            var headerRect = new Rect(canvas.xMax - (GenUI.SmallIconSize * 2) + 5, canvas.y - 20, GenUI.SmallIconSize, GenUI.SmallIconSize);
+            if (Widgets.ButtonImage(headerRect, TexResource.Gear))
             {
-                Rect primaryRect = rectForEquipment.NextAvailableRect();
-                GUI.DrawTexture(primaryRect, Command.BGTex);
-                TooltipHandler.TipRegion(primaryRect, UIText.PrimaryWeapon.Translate());
-
-                foreach (ThingWithComps equipment in selPawn.equipment.AllEquipmentListForReading)
-                {
-                    if (equipment == selPawn.equipment.Primary)
-                    {
-                        this.DrawThingIcon(selPawn, primaryRect, equipment);
-                    }
-                    else
-                    {
-                        Rect emptyRect = equipementRectList.GetRectFor(equipment);
-                        if (emptyRect == default)
-                        {
-                            emptyRect = equipementRectList.GetWorkingSmartRect(
-                                (euipment) => { return true; },
-                                pawnRect.x,
-                                pawnRect.x).GetRectFor(equipment);
-                        }
-
-                        if (emptyRect != default)
-                        {
-                            this.DrawThingIcon(selPawn, emptyRect, equipment);
-                        }
-                    }
-                }
+                Find.WindowStack.Add(new Dialog_Settings());
             }
 
-        #endregion
-
-            #region Apparels
-
-            // List order: Head:200-181, Neck:180-101, Torso:100-51, Waist:50-11, Legs:10-0
-            // Check \steamapps\common\RimWorld\Mods\Core\Defs\Bodies\BodyPartGroups.xml
-            this.DrawDefaultThingIconRects(selPawn.apparel.WornApparel, viewRect.LeftPart(1 - _divider), apparelChanged);
-            IEnumerable<Apparel> extraApparels = this.DrawApparels(selPawn, selPawn.apparel.WornApparel, _smartRectList);
-
-            #endregion
-
-            #region Draw Traits
-
-            SmartRect<Apparel> lastSmartRect = _smartRectList.SmartRects.Last();
-            float traitY = lastSmartRect.yMax + lastSmartRect.HeightGap;
-            WidgetRow traitRow = new WidgetRow(viewRect.x, traitY, UIDirection.RightThenDown, statRect.x - viewRect.x);
-
-            this.DrawTraits(traitRow, selPawn);
-
-            float rollingY = traitRow.FinalY + WidgetRow.IconSize;
-            #endregion
-
-            #region Extra Apparels
-
-            // If there is any more remains, put them into their own category
-            if (extraApparels.Any())
+            if (Widgets.ButtonImage(headerRect.ReplaceX(headerRect.x - GenUI.SmallIconSize), TexResource.Checklist))
             {
-                rollingY += Utility.StandardLineHeight;
-                float x = viewRect.x;
-                Widgets.ListSeparator(ref rollingY, viewRect.width, UIText.ExtraApparels.TranslateSimple());
-
-                foreach (Apparel extraApparel in extraApparels)
-                {
-                    Rect rect = new Rect(x, rollingY, _apparelRectWidth, _apparelRectHeight);
-                    this.DrawThingIcon(selPawn, rect, extraApparel);
-
-                    x += _apparelRectWidth + GenUI.GapSmall;
-                    if (x + _apparelRectWidth > viewRect.xMax)
-                    {
-                        rollingY += _apparelRectHeight + GenUI.GapSmall;
-                        x = viewRect.x;
-                    }
-                }
-
-                rollingY += _apparelRectHeight + GenUI.GapSmall;
+                Find.WindowStack.Add(new Dialog_InventoryOverview());
             }
 
-            #endregion Extra Apparels
-
-        #region Draw Inventory
-
+            float rollingY = 375;
             // Balance the y coordinate of the left and right panels.
             if (Utility.ShouldShowInventory(selPawn))
             {
-                if (rollingY < equipementRectList.SmartRects.Last().yMax)
-                {
-                    rollingY = equipementRectList.SmartRects.Last().yMax;
-                }
-
-                rollingY += Utility.StandardLineHeight;
-
                 if (AwesomeInventoryMod.Settings.UseLoadout && selPawn.IsColonist && !selPawn.IsQuestLodger())
                     this.DrawLoadoutButtons(selPawn, viewRect.xMax, ref rollingY, viewRect.width);
-
-                ThingOwner<Thing> things = selPawn.inventory.innerContainer;
-                if (!things.Any())
-                    Widgets.ListSeparator(ref rollingY, viewRect.width, UIText.Inventory.Translate());
-
-                this.DrawInventory(things, selPawn, ref rollingY, viewRect.width);
             }
-        #endregion Draw Inventory
-
-            _scrollViewHeight = rollingY + InspectPaneUtility.TabHeight;
-
-            Widgets.EndScrollView();
-
-            this.DrawWeightBar(new Rect(outRect.x, outRect.yMax, viewRect.width, GenUI.SmallIconSize), selPawn);
-
-            GUI.color = Color.white;
-            Text.Anchor = TextAnchor.UpperLeft;
+            _statPanelToggle.SetPosition(new Vector2(canvas.xMax + 10, canvas.y + 320));
+            _statPanelToggle.Draw();
         }
 
         /// <inheritdoc/>
