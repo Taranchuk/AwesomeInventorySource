@@ -35,7 +35,7 @@ namespace AwesomeInventory.HarmonyPatches
         public static event Action<bool> ApparelChangedEvent;
 
         /// <summary>
-        /// Notify <see cref="AwesomeInventoryTabBase"/> that apparel has changed.
+        /// Notify <see cref="AwesomeInventoryTabBaseStatic"/> that apparel has changed.
         /// </summary>
         public static void Postfix()
         {

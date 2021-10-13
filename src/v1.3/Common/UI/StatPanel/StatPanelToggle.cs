@@ -39,41 +39,45 @@ namespace AwesomeInventory.UI
                 Find.WindowStack.ImmediateWindow(
                     typeof(StatPanelToggle).GetHashCode()
                     , rect
-                    , WindowLayer.GameUI
+                    , WindowLayer.Super
                     , () =>
                     {
+                        Widgets.DrawBox(rect.AtZero());
                         if (Widgets.ButtonImageWithBG(
                             rect.AtZero()
                             , TexResource.TriangleLeft
                             , new Vector2(GenUI.SmallIconSize, GenUI.SmallIconSize * 1.5f)))
                         {
-                            Find.WindowStack.TryRemove(this.StatPanel);
                             StatPanel.IsOpen = false;
+                            Find.WindowStack.TryRemove(this.StatPanel);
                         }
                     }
                     , true
                     , false);
-                return;
+
+            }
+            else
+            {
+                rect = new Rect(_x, _y, GenUI.ListSpacing, GenUI.ListSpacing * 2);
+                Find.WindowStack.ImmediateWindow(
+                    typeof(StatPanelToggle).GetHashCode()
+                    , rect
+                    , WindowLayer.Super
+                    , () =>
+                    {
+                        if (Widgets.ButtonImageWithBG(
+                            rect.AtZero()
+                            , TexResource.TriangleRight
+                            , new Vector2(GenUI.SmallIconSize, GenUI.SmallIconSize * 1.5f)))
+                        {
+                            Find.WindowStack.Add(this.StatPanel);
+                            StatPanel.IsOpen = true;
+                        }
+                    }
+                    , true
+                    , false);
             }
 
-            rect = new Rect(_x, _y, GenUI.ListSpacing, GenUI.ListSpacing * 2);
-            Find.WindowStack.ImmediateWindow(
-                typeof(StatPanelToggle).GetHashCode()
-                , rect
-                , WindowLayer.GameUI
-                , () =>
-                {
-                    if (Widgets.ButtonImageWithBG(
-                        rect.AtZero()
-                        , TexResource.TriangleRight
-                        , new Vector2(GenUI.SmallIconSize, GenUI.SmallIconSize * 1.5f)))
-                    {
-                        Find.WindowStack.Add(this.StatPanel);
-                        StatPanel.IsOpen = true;
-                    }
-                }
-                , true
-                , false);
         }
     }
 }

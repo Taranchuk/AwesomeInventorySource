@@ -24,8 +24,11 @@ namespace AwesomeInventory.HarmonyPatches
         static RPG_Inventory_CEPatch()
         {
             MethodInfo original = AccessTools.Method("Sandy_Detailed_RPG_GearTab:FillTab");
-            MethodInfo postfix = AccessTools.Method(typeof(RPG_Inventory_CEPatch), "Postfix");
-            Utility.Harmony.Patch(original, null, new HarmonyMethod(postfix));
+            if (original != null)
+            {
+                MethodInfo postfix = AccessTools.Method(typeof(RPG_Inventory_CEPatch), "Postfix");
+                Utility.Harmony.Patch(original, null, new HarmonyMethod(postfix));
+            }
         }
 
         public static Dictionary<Pawn, CEDrawGearTabWorker> workers = new Dictionary<Pawn, CEDrawGearTabWorker>();
@@ -36,7 +39,7 @@ namespace AwesomeInventory.HarmonyPatches
                 workers[__instance.SelPawnForGear] = worker = new CEDrawGearTabWorker(__instance);
             }
             var rect = new Rect(0f, 20f, __instance.size.x, __instance.size.y - 20f).ContractedBy(10f);
-            worker.DrawJealous(__instance.SelPawnForGear, rect, true);
+            worker.DrawMini(__instance.SelPawnForGear, rect, true);
         }
     }
     /// <summary>

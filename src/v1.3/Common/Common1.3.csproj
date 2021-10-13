@@ -128,7 +128,7 @@
     <Compile Include="DynamicDefs\AIGenericMedicine.cs" />
     <Compile Include="DynamicDefs\AIGenericRawFood.cs" />
     <Compile Include="GearTab\DrawGearTabWorker.cs" />
-    <Compile Include="GearTab\AwesomeInventoryTabBase.cs" />
+    <Compile Include="GearTab\AwesomeInventoryTabBaseStatic.cs" />
     <Compile Include="Gizmos\ToggleGearTab.cs" />
     <Compile Include="HarmonyPatches\OutfitDatabase_TryDelete.cs" />
     <Compile Include="DefOfs\AwesomeInventory_JobDefOf.cs" />
@@ -315,7 +315,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Krafs.Rimworld.Ref">
-      <Version>1.3.3136-beta</Version>
+      <Version>1.3.3146-beta</Version>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
       <Version>2.1.1</Version>

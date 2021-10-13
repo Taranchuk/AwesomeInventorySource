@@ -94,7 +94,8 @@ namespace AwesomeInventory.UI
         private readonly StatPanelToggle _statPanelToggle = new StatPanelToggle();
         /// <inheritdoc/>
         [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Bug in style cop.")]
-        public virtual void DrawJealous(Pawn selPawn, Rect canvas, bool apparelChanged)
+
+        public virtual void DrawMini(Pawn selPawn, Rect canvas, bool apparelChanged)
         {
             ValidateArg.NotNull(selPawn, nameof(selPawn));
 
@@ -162,7 +163,7 @@ namespace AwesomeInventory.UI
             this.DrawArmorStatsRow(row, selPawn, StatDefOf.ArmorRating_Heat, UIText.ArmorHeat.TranslateSimple(), apparelChanged);
             rollingY = row.FinalY;
 
-            if ((bool)AwesomeInventoryTabBase.ShouldShowEquipment.Invoke(_gearTab, new object[] { selPawn }))
+            if ((bool)AwesomeInventoryTabBaseStatic.ShouldShowEquipment.Invoke(_gearTab, new object[] { selPawn }))
             {
                 Widgets.ListSeparator(ref rollingY, viewRect.width, UIText.Equipment.TranslateSimple());
                 foreach (ThingWithComps equipment in selPawn.equipment.AllEquipmentListForReading)
@@ -171,7 +172,7 @@ namespace AwesomeInventory.UI
                 }
             }
 
-            if ((bool)AwesomeInventoryTabBase.ShouldShowApparel.Invoke(_gearTab, new object[] { selPawn }))
+            if ((bool)AwesomeInventoryTabBaseStatic.ShouldShowApparel.Invoke(_gearTab, new object[] { selPawn }))
             {
                 Widgets.ListSeparator(ref rollingY, viewRect.width, UIText.Apparel.TranslateSimple());
                 foreach (Apparel apparel in from ap in selPawn.apparel.WornApparel
@@ -182,7 +183,7 @@ namespace AwesomeInventory.UI
                 }
             }
 
-            if ((bool)AwesomeInventoryTabBase.ShouldShowInventory.Invoke(_gearTab, new object[] { selPawn }))
+            if ((bool)AwesomeInventoryTabBaseStatic.ShouldShowInventory.Invoke(_gearTab, new object[] { selPawn }))
             {
                 if (AwesomeInventoryMod.Settings.UseLoadout && selPawn.IsColonist && !selPawn.IsQuestLodger())
                 {
@@ -540,7 +541,7 @@ namespace AwesomeInventory.UI
                 {
                     if (row.ButtonIcon(TexResource.Drop, tooltip))
                     {
-                        AwesomeInventoryTabBase.InterfaceDrop.Invoke(_gearTab, new object[] { thing });
+                        AwesomeInventoryTabBaseStatic.InterfaceDrop.Invoke(_gearTab, new object[] { thing });
                     }
 
                     Rect unloadButtonRect = new Rect(row.FinalX - GenUI.SmallIconSize, row.FinalY, GenUI.SmallIconSize, GenUI.ListSpacing);
@@ -581,12 +582,12 @@ namespace AwesomeInventory.UI
             GUI.color = Color.white;
 
             // Draw ingest button.
-            if ((bool)AwesomeInventoryTabBase.CanControlColonist.GetValue(_gearTab) && (thing.def.IsNutritionGivingIngestible || thing.def.IsNonMedicalDrug) && thing.IngestibleNow && selPawn.WillEat(thing))
+            if ((bool)AwesomeInventoryTabBaseStatic.CanControlColonist.GetValue(_gearTab) && (thing.def.IsNutritionGivingIngestible || thing.def.IsNonMedicalDrug) && thing.IngestibleNow && selPawn.WillEat(thing))
             {
                 if (row.ButtonIcon(TexResource.Ingest, UIText.ConsumeThing.Translate(thing.LabelNoCount, thing)))
                 {
                     SoundDefOf.Tick_High.PlayOneShotOnCamera();
-                    AwesomeInventoryTabBase.InterfaceIngest.Invoke(_gearTab, new object[] { thing });
+                    AwesomeInventoryTabBaseStatic.InterfaceIngest.Invoke(_gearTab, new object[] { thing });
                 }
             }
             else
@@ -964,7 +965,7 @@ namespace AwesomeInventory.UI
                     menuOptions.Add(
                         new FloatMenuOption(
                             UIText.DropThing.TranslateSimple()
-                            , () => AwesomeInventoryTabBase.InterfaceDrop.Invoke(_gearTab, new object[] { equipment })));
+                            , () => AwesomeInventoryTabBaseStatic.InterfaceDrop.Invoke(_gearTab, new object[] { equipment })));
                 }
                 else if (selPawn.story.DisabledWorkTagsBackstoryAndTraits.HasFlag(WorkTags.Violent))
                 {
@@ -1092,7 +1093,7 @@ namespace AwesomeInventory.UI
                         UIText.DropThing.Translate(),
                         () =>
                         {
-                            AwesomeInventoryTabBase.InterfaceDrop.Invoke(_gearTab, new object[] { apparel });
+                            AwesomeInventoryTabBaseStatic.InterfaceDrop.Invoke(_gearTab, new object[] { apparel });
                         });
                     floatOptionList.Add(option);
                 }
@@ -1110,7 +1111,7 @@ namespace AwesomeInventory.UI
             if (Widgets.ButtonInvisible(rect) && Event.current.button == 1)
             {
                 // Check if pawn is under control
-                if ((bool)AwesomeInventoryTabBase.CanControlColonist.GetValue((ITab_Pawn_Gear)_gearTab))
+                if ((bool)AwesomeInventoryTabBaseStatic.CanControlColonist.GetValue((ITab_Pawn_Gear)_gearTab))
                 {
                     List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
 
@@ -1373,9 +1374,9 @@ namespace AwesomeInventory.UI
             bool showDropButton = false;
             canDrop = false;
             tooltip = string.Empty;
-            if ((bool)AwesomeInventoryTabBase.CanControl.GetValue(_gearTab)
+            if ((bool)AwesomeInventoryTabBaseStatic.CanControl.GetValue(_gearTab)
                 && (inventory
-                    || (bool)AwesomeInventoryTabBase.CanControlColonist.GetValue((ITab_Pawn_Gear)_gearTab)
+                    || (bool)AwesomeInventoryTabBaseStatic.CanControlColonist.GetValue((ITab_Pawn_Gear)_gearTab)
                     || (pawn.Spawned && !pawn.Map.IsPlayerHome)))
             {
                 showDropButton = true;
@@ -1458,6 +1459,157 @@ namespace AwesomeInventory.UI
                 Widgets.ListSeparator(ref rollingY, width, UIText.Items.TranslateSimple());
             foreach (Thing thing in thingGroup.Miscellaneous)
                 this.DrawThingRow(selPawn, ref rollingY, width, thing, true);
+        }
+
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Bug in style cop.")]
+        public virtual void DrawJealous(Pawn selPawn, Rect canvas, bool apparelChanged)
+        {
+            ValidateArg.NotNull(selPawn, nameof(selPawn));
+
+            Rect outRect = this.SetOutRectForJealousTab(canvas);
+            Rect viewRect = outRect;
+            viewRect.height = _scrollViewHeight;
+            viewRect.width -= GenUI.ScrollBarWidth;
+
+            // start drawing the view
+            Text.Font = GameFont.Small;
+            Widgets.BeginScrollView(outRect, ref _scrollPosition, viewRect);
+
+            // draw all stats on the right
+            Rect statRect = viewRect.RightPart(_divider);
+            this.DrawStatPanel(statRect, selPawn, out float statY, apparelChanged);
+
+            // Draw paper doll.
+            Rect pawnRect = new Rect(new Vector2(statRect.x + GenUI.GapSmall, statY), PaperDollSize);
+            Utility.DrawColonist(pawnRect, selPawn);
+
+            #region Weapon
+
+            // TODO take a look at how shield is euqipped.
+            SmartRect<ThingWithComps> rectForEquipment =
+                new SmartRect<ThingWithComps>(
+                    template: new Rect(statRect.x, pawnRect.yMax, _apparelRectWidth, _apparelRectHeight),
+                    selector: (thing) => { return true; },
+                    xLeftCurPosition: pawnRect.x,
+                    xRightCurPosition: pawnRect.x,
+                    list: null,
+                    xLeftEdge: pawnRect.x,
+                    xRightEdge: outRect.xMax - GenUI.ScrollBarWidth);
+
+            SmartRectList<ThingWithComps> equipementRectList = new SmartRectList<ThingWithComps>();
+            equipementRectList.Init(rectForEquipment);
+
+            if (Utility.ShouldShowEquipment(selPawn))
+            {
+                Rect primaryRect = rectForEquipment.NextAvailableRect();
+                GUI.DrawTexture(primaryRect, Command.BGTex);
+                TooltipHandler.TipRegion(primaryRect, UIText.PrimaryWeapon.Translate());
+
+                foreach (ThingWithComps equipment in selPawn.equipment.AllEquipmentListForReading)
+                {
+                    if (equipment == selPawn.equipment.Primary)
+                    {
+                        this.DrawThingIcon(selPawn, primaryRect, equipment);
+                    }
+                    else
+                    {
+                        Rect emptyRect = equipementRectList.GetRectFor(equipment);
+                        if (emptyRect == default)
+                        {
+                            emptyRect = equipementRectList.GetWorkingSmartRect(
+                                (euipment) => { return true; },
+                                pawnRect.x,
+                                pawnRect.x).GetRectFor(equipment);
+                        }
+
+                        if (emptyRect != default)
+                        {
+                            this.DrawThingIcon(selPawn, emptyRect, equipment);
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+            #region Apparels
+
+            // List order: Head:200-181, Neck:180-101, Torso:100-51, Waist:50-11, Legs:10-0
+            // Check \steamapps\common\RimWorld\Mods\Core\Defs\Bodies\BodyPartGroups.xml
+            this.DrawDefaultThingIconRects(selPawn.apparel.WornApparel, viewRect.LeftPart(1 - _divider), apparelChanged);
+            IEnumerable<Apparel> extraApparels = this.DrawApparels(selPawn, selPawn.apparel.WornApparel, _smartRectList);
+
+            #endregion
+
+            #region Draw Traits
+
+            SmartRect<Apparel> lastSmartRect = _smartRectList.SmartRects.Last();
+            float traitY = lastSmartRect.yMax + lastSmartRect.HeightGap;
+            WidgetRow traitRow = new WidgetRow(viewRect.x, traitY, UIDirection.RightThenDown, statRect.x - viewRect.x);
+
+            this.DrawTraits(traitRow, selPawn);
+
+            float rollingY = traitRow.FinalY + WidgetRow.IconSize;
+            #endregion
+
+            #region Extra Apparels
+
+            // If there is any more remains, put them into their own category
+            if (extraApparels.Any())
+            {
+                rollingY += Utility.StandardLineHeight;
+                float x = viewRect.x;
+                Widgets.ListSeparator(ref rollingY, viewRect.width, UIText.ExtraApparels.TranslateSimple());
+
+                foreach (Apparel extraApparel in extraApparels)
+                {
+                    Rect rect = new Rect(x, rollingY, _apparelRectWidth, _apparelRectHeight);
+                    this.DrawThingIcon(selPawn, rect, extraApparel);
+
+                    x += _apparelRectWidth + GenUI.GapSmall;
+                    if (x + _apparelRectWidth > viewRect.xMax)
+                    {
+                        rollingY += _apparelRectHeight + GenUI.GapSmall;
+                        x = viewRect.x;
+                    }
+                }
+
+                rollingY += _apparelRectHeight + GenUI.GapSmall;
+            }
+
+            #endregion Extra Apparels
+
+            #region Draw Inventory
+
+            // Balance the y coordinate of the left and right panels.
+            if (Utility.ShouldShowInventory(selPawn))
+            {
+                if (rollingY < equipementRectList.SmartRects.Last().yMax)
+                {
+                    rollingY = equipementRectList.SmartRects.Last().yMax;
+                }
+
+                rollingY += Utility.StandardLineHeight;
+
+                if (AwesomeInventoryMod.Settings.UseLoadout && selPawn.IsColonist && !selPawn.IsQuestLodger())
+                    this.DrawLoadoutButtons(selPawn, viewRect.xMax, ref rollingY, viewRect.width);
+
+                ThingOwner<Thing> things = selPawn.inventory.innerContainer;
+                if (!things.Any())
+                    Widgets.ListSeparator(ref rollingY, viewRect.width, UIText.Inventory.Translate());
+
+                this.DrawInventory(things, selPawn, ref rollingY, viewRect.width);
+            }
+            #endregion Draw Inventory
+
+            _scrollViewHeight = rollingY + InspectPaneUtility.TabHeight;
+
+            Widgets.EndScrollView();
+
+            this.DrawWeightBar(new Rect(outRect.x, outRect.yMax, viewRect.width, GenUI.SmallIconSize), selPawn);
+
+            GUI.color = Color.white;
+            Text.Anchor = TextAnchor.UpperLeft;
         }
     }
 }

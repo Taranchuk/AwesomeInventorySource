@@ -14,6 +14,18 @@ using Verse;
 
 namespace AwesomeInventory.UI
 {
+    public class AwesomeInventoryTab : AwesomeInventoryTabBase
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AwesomeInventoryTab"/> class.
+        /// </summary>
+        [Obsolete(ErrorText.NoDirectCall, false)]
+        public AwesomeInventoryTab()
+        {
+            _drawGearTab = new CEDrawGearTabWorker(this);
+        }
+    }
+
     /// <summary>
     /// Draws window content for CE gear tab.
     /// </summary>
@@ -38,67 +50,67 @@ namespace AwesomeInventory.UI
         /// <inheritdoc/>
         protected override void DrawWeightBar(Rect rect, Pawn selPawn)
         {
-            //base.DrawWeightBar(rect.ReplaceHeight(GenUI.SmallIconSize), selPawn);
-            //
-            //List<Thing> things = new List<Thing>();
-            //if (selPawn.equipment?.AllEquipmentListForReading != null)
-            //{
-            //    things.AddRange(selPawn.equipment.AllEquipmentListForReading);
-            //}
-            //
-            //if (selPawn.inventory?.innerContainer != null)
-            //{
-            //    things.AddRange(selPawn.inventory.innerContainer);
-            //}
-            //
-            //// Draw bulk bar.
-            //float currentBulk = things.Sum(thing => thing.GetStatValue(CE_StatDefOf.Bulk) * thing.stackCount)
-            //    + selPawn.apparel?.WornApparel.Sum(apparel => apparel.GetStatValue(CE_StatDefOf.WornBulk)) ?? 0;
-            //float carryBulk = selPawn.GetStatValue(CE_StatDefOf.CarryBulk);
-            //float fillPercent = Mathf.Clamp01(currentBulk / carryBulk);
-            //GenBar.BarWithOverlay(
-            //rect.ReplaceY(rect.yMax + GenUI.GapSmall)
-            //, fillPercent
-            //, SolidColorMaterials.NewSolidColorTexture(Color.Lerp(AwesomeInventoryTex.RWPrimaryColor, AwesomeInventoryTex.Valvet, fillPercent))
-            //, UIText.Bulk.TranslateSimple()
-            //, currentBulk.ToString("0.#") + "/" + carryBulk.ToString()
-            //, (this.DrawHelper as DrawHelperCE).BulkTextFor(selPawn));
+            base.DrawWeightBar(rect.ReplaceHeight(GenUI.SmallIconSize), selPawn);
+            
+            List<Thing> things = new List<Thing>();
+            if (selPawn.equipment?.AllEquipmentListForReading != null)
+            {
+                things.AddRange(selPawn.equipment.AllEquipmentListForReading);
+            }
+            
+            if (selPawn.inventory?.innerContainer != null)
+            {
+                things.AddRange(selPawn.inventory.innerContainer);
+            }
+            
+            // Draw bulk bar.
+            float currentBulk = things.Sum(thing => thing.GetStatValue(CE_StatDefOf.Bulk) * thing.stackCount)
+                + selPawn.apparel?.WornApparel.Sum(apparel => apparel.GetStatValue(CE_StatDefOf.WornBulk)) ?? 0;
+            float carryBulk = selPawn.GetStatValue(CE_StatDefOf.CarryBulk);
+            float fillPercent = Mathf.Clamp01(currentBulk / carryBulk);
+            GenBar.BarWithOverlay(
+            rect.ReplaceY(rect.yMax + GenUI.GapSmall)
+            , fillPercent
+            , SolidColorMaterials.NewSolidColorTexture(Color.Lerp(AwesomeInventoryTex.RWPrimaryColor, AwesomeInventoryTex.Valvet, fillPercent))
+            , UIText.Bulk.TranslateSimple()
+            , currentBulk.ToString("0.#") + "/" + carryBulk.ToString()
+            , (this.DrawHelper as DrawHelperCE).BulkTextFor(selPawn));
         }
 
         /// <inheritdoc/>
         protected override void DrawArmorStats(WidgetRow row, Pawn pawn, bool apparelChanged)
         {
-            //string format = "0.#";
-            //
-            //this.DrawArmorStatsWorker(
-            //    row
-            //    , pawn
-            //    , StatDefOf.ArmorRating_Blunt
-            //    , (value) => value.ToString(format) + CEStrings.MPa.TranslateSimple()
-            //    , TexResource.ArmorBlunt
-            //    , UIText.ArmorBlunt.TranslateSimple()
-            //    , apparelChanged
-            //    , false);
-            //
-            //this.DrawArmorStatsWorker(
-            //    row
-            //    , pawn
-            //    , StatDefOf.ArmorRating_Sharp
-            //    , (value) => value.ToString(format) + CEStrings.mmRHA.TranslateSimple()
-            //    , TexResource.ArmorSharp
-            //    , UIText.ArmorSharp.TranslateSimple()
-            //    , apparelChanged
-            //    , false);
-            //
-            //this.DrawArmorStatsWorker(
-            //    row
-            //    , pawn
-            //    , StatDefOf.ArmorRating_Heat
-            //    , (value) => value.ToString(format) + UIText.ArmorHeat.TranslateSimple()
-            //    , TexResource.ArmorHeat
-            //    , UIText.ArmorHeat.TranslateSimple()
-            //    , apparelChanged
-            //    , true);
+            string format = "0.#";
+            
+            this.DrawArmorStatsWorker(
+                row
+                , pawn
+                , StatDefOf.ArmorRating_Blunt
+                , (value) => value.ToString(format) + CEStrings.MPa.TranslateSimple()
+                , TexResource.ArmorBlunt
+                , UIText.ArmorBlunt.TranslateSimple()
+                , apparelChanged
+                , false);
+            
+            this.DrawArmorStatsWorker(
+                row
+                , pawn
+                , StatDefOf.ArmorRating_Sharp
+                , (value) => value.ToString(format) + CEStrings.mmRHA.TranslateSimple()
+                , TexResource.ArmorSharp
+                , UIText.ArmorSharp.TranslateSimple()
+                , apparelChanged
+                , false);
+            
+            this.DrawArmorStatsWorker(
+                row
+                , pawn
+                , StatDefOf.ArmorRating_Heat
+                , (value) => value.ToString(format) + UIText.ArmorHeat.TranslateSimple()
+                , TexResource.ArmorHeat
+                , UIText.ArmorHeat.TranslateSimple()
+                , apparelChanged
+                , true);
         }
 
         /// <inheritdoc/>
@@ -131,26 +143,27 @@ namespace AwesomeInventory.UI
         }
 
         /// <inheritdoc/>
+        /// 
         protected override void DrawArmorStatsRow(WidgetRow row, Pawn pawn, StatDef stat, string label, bool apparelChanged)
         {
-            //ValidateArg.NotNull(row, nameof(row));
-            //
-            //Tuple<float, string> tuple = this.GetArmorStat(pawn, stat, apparelChanged);
-            //row.Label(label);
-            //row.Gap((WidgetRow.LabelGap * 120) - row.FinalX);
-            //
-            //if (stat == StatDefOf.ArmorRating_Blunt)
-            //    row.Label(Utility.FormatArmorValue(tuple.Item1, CEStrings.MPa.TranslateSimple()));
-            //else if (stat == StatDefOf.ArmorRating_Sharp)
-            //    row.Label(Utility.FormatArmorValue(tuple.Item1, CEStrings.mmRHA.TranslateSimple()));
-            //else if (stat == StatDefOf.ArmorRating_Heat)
-            //    row.Label(Utility.FormatArmorValue(tuple.Item1, UIText.ArmorHeat.TranslateSimple()));
-            //
-            //Rect tipRegion = new Rect(0, row.FinalY, row.FinalX, WidgetRow.IconSize);
-            //row.Gap(int.MaxValue);
-            //
-            //TooltipHandler.TipRegion(tipRegion, tuple.Item2);
-            //Widgets.DrawHighlightIfMouseover(tipRegion);
+            ValidateArg.NotNull(row, nameof(row));
+            
+            Tuple<float, string> tuple = this.GetArmorStat(pawn, stat, apparelChanged);
+            row.Label(label);
+            row.Gap((WidgetRow.LabelGap * 120) - row.FinalX);
+            
+            if (stat == StatDefOf.ArmorRating_Blunt)
+                row.Label(Utility.FormatArmorValue(tuple.Item1, CEStrings.MPa.TranslateSimple()));
+            else if (stat == StatDefOf.ArmorRating_Sharp)
+                row.Label(Utility.FormatArmorValue(tuple.Item1, CEStrings.mmRHA.TranslateSimple()));
+            else if (stat == StatDefOf.ArmorRating_Heat)
+                row.Label(Utility.FormatArmorValue(tuple.Item1, UIText.ArmorHeat.TranslateSimple()));
+            
+            Rect tipRegion = new Rect(0, row.FinalY, row.FinalX, WidgetRow.IconSize);
+            row.Gap(int.MaxValue);
+            
+            TooltipHandler.TipRegion(tipRegion, tuple.Item2);
+            Widgets.DrawHighlightIfMouseover(tipRegion);
         }
     }
 }

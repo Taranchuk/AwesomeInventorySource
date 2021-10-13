@@ -46,7 +46,7 @@ namespace AwesomeInventory.UI
         }
 
         public bool IsValid => Find.MainTabsRoot.OpenTab?.TabWindow is MainTabWindow_Inspect tabWindow
-                               && typeof(AwesomeInventoryTabBase).IsAssignableFrom(tabWindow.OpenTabType);
+                               && typeof(AwesomeInventoryTabBaseStatic).IsAssignableFrom(tabWindow.OpenTabType);
 
         #region Overrides of Window
 
