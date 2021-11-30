@@ -91,7 +91,6 @@ namespace AwesomeInventory.UI
         public virtual void DrawAscetic()
         {
         }
-        private readonly StatPanelToggle _statPanelToggle = new StatPanelToggle();
         /// <inheritdoc/>
         [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Bug in style cop.")]
 
@@ -125,8 +124,6 @@ namespace AwesomeInventory.UI
                 if (AwesomeInventoryMod.Settings.UseLoadout && selPawn.IsColonist && !selPawn.IsQuestLodger())
                     this.DrawLoadoutButtons(selPawn, viewRect.xMax, ref rollingY, viewRect.width);
             }
-            _statPanelToggle.SetPosition(new Vector2(canvas.xMax + 10, canvas.y + 320));
-            _statPanelToggle.Draw();
         }
 
         /// <inheritdoc/>

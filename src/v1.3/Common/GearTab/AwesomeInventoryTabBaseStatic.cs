@@ -38,7 +38,6 @@ namespace AwesomeInventory.UI
             = AwesomeInventoryServiceProvider.GetPluginsOfType<CustomRace>();
 
         private readonly object _apparelChangedLock = new object();
-        private readonly StatPanelToggle _statPanelToggle = new StatPanelToggle();
         private Pawn _selPawn;
 
         /// <summary>
@@ -117,14 +116,12 @@ namespace AwesomeInventory.UI
         {
             base.OnOpen();
             _drawGearTab.Reset();
-            _statPanelToggle.SetPosition(new Vector2(this.TabRect.xMax, this.TabRect.y));
         }
 
         /// <inheritdoc />
         public override void TabUpdate()
         {
             base.TabUpdate();
-            _statPanelToggle.SetPosition(new Vector2(this.TabRect.xMax, this.TabRect.y));
         }
 
         /// <summary>
@@ -250,7 +247,6 @@ namespace AwesomeInventory.UI
                 }
             }
 
-            _statPanelToggle.Draw();
         }
 
         private Rect GetHeaderRect(float x, string translatedText)
