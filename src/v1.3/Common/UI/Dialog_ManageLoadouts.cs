@@ -460,9 +460,11 @@ namespace AwesomeInventory.UI
                                         .OrderBy(l => l.label)
                                         .Select(loadout => new FloatMenuOption(loadout.label, () =>
                                         {
-                                            foreach (var selector in loadout)
-                                                _currentLoadout.Add(new ThingGroupSelector(selector));
-
+                                            for (var i = loadout.Count - 1; i >= 0; i--)
+                                            {
+                                                var item = loadout[i];
+                                                _currentLoadout.Add(new ThingGroupSelector(item));
+                                            }
                                             _currentLoadout.CopyCostumeFrom(loadout);
                                         }))
                                         .ToList();

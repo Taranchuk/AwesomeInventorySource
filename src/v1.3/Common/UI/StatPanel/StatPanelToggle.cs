@@ -30,6 +30,10 @@ namespace AwesomeInventory.UI
         public void Draw()
         {
             Rect rect;
+            if (Find.WindowStack.IsOpen<Dialog_ManageLoadouts>())
+            {
+                return;
+            }
             if (StatPanel.IsOpen)
             {
                 if (!Find.WindowStack.IsOpen(typeof(StatPanel)))

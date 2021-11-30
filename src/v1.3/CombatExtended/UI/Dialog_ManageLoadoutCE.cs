@@ -86,58 +86,60 @@ namespace AwesomeInventory.UI
 
             /* Label (fill) | Weight | Gear Icon | Count Field | Delete Icon */
 
-            WidgetRow widgetRow = new WidgetRow(row.width, row.y, UIDirection.LeftThenDown, row.width);
-            ThingGroupSelector groupSelector = groupSelectors[index];
+            var widgetRow = new WidgetRow(row.width, row.y, UIDirection.LeftThenDown, row.width);
+            var groupSelector = groupSelectors[index];
 
             // Draw delete icon.
-            this.DrawDeleteIconInThingRow(widgetRow, groupSelectors, groupSelector);
+            DrawDeleteIconInThingRow(widgetRow, groupSelectors, groupSelector);
 
             Text.Anchor = TextAnchor.MiddleLeft;
 
             // Draw count field.
             if (WhiteBlacklistView.IsWishlist)
             {
-                this.DrawCountFieldInThingRow(
-                new Rect(widgetRow.FinalX - WidgetRow.IconSize * 2 - WidgetRow.DefaultGap, widgetRow.FinalY, WidgetRow.IconSize * 2, GenUI.ListSpacing),
-                groupSelector);
-                //widgetRow.GapButtonIcon();
-                //widgetRow.GapButtonIcon();
-            }
-
-            // Draw threshold.
-            if (widgetRow.ButtonIcon(TexResource.Threshold, UIText.StockMode.TranslateSimple()))
-            {
-                Find.WindowStack.Add(new Dialog_RestockTrigger(groupSelector));
+                DrawCountFieldInThingRow(new Rect(widgetRow.FinalX - WidgetRow.IconSize * 2 - WidgetRow.DefaultGap, widgetRow.FinalY, WidgetRow.IconSize * 2, GenUI.ListSpacing),
+                    groupSelector);
+                widgetRow.Gap(WidgetRow.IconSize * 2 + 4f);
             }
 
             // Draw gear icon.
-            this.DrawGearIconInThingRow(widgetRow, groupSelector);
+            DrawGearIconInThingRow(widgetRow, groupSelector);
 
             // Draw ammo if thing is ammo user.
             this.DrawAmmoSelection(widgetRow, groupSelector.AllowedThing);
-
+            
+            Text.Anchor = TextAnchor.MiddleLeft;
             Text.WordWrap = false;
 
+            var textSize = 0f;
             // Draw weight or bulk.
             if (_drawWeight)
+            {
                 widgetRow.Label(groupSelector.Weight.ToStringMass());
+                textSize = Text.CalcSize(groupSelector.Weight.ToStringMass()).x;
+            }
             else
+            {
                 widgetRow.Label(groupSelector.AllowedThing.GetStatValueAbstract(CE_StatDefOf.Bulk).ToString() + " b");
+                textSize = Text.CalcSize(groupSelector.AllowedThing.GetStatValueAbstract(CE_StatDefOf.Bulk).ToString() + " b").x;
+            }
 
+            widgetRow.Gap(row.width - (24f + (widgetRow.CellGap * 2) + textSize + 550));
+            widgetRow.curY -= 27;
             // Draw label.
             Rect labelRect = widgetRow.Label(
                 drawShadow
                     ? groupSelector.LabelCapNoCount.StripTags().Colorize(Theme.MilkySlicky.ForeGround)
                     : groupSelector.LabelCapNoCount
                 , widgetRow.FinalX);
-
+            
             Text.WordWrap = true;
             Text.Anchor = TextAnchor.UpperLeft;
-
+            
             if (!drawShadow)
             {
                 ReorderableWidget.Reorderable(reorderableGroup, labelRect);
-
+            
                 // Tooltips && Highlights
                 Widgets.DrawHighlightIfMouseover(row);
                 if (Event.current.type == EventType.MouseDown && Mouse.IsOver(row))
@@ -155,7 +157,7 @@ namespace AwesomeInventory.UI
                                         var loadout = _currentLoadout;
                                         if (loadout is AwesomeInventoryCostume costume)
                                             loadout = costume.Base;
-
+            
                                         groupSelector.AddToLoadouts(Loadout.LoadoutManager.PlainLoadouts.Except(loadout));
                                     }),
                             });
@@ -164,12 +166,17 @@ namespace AwesomeInventory.UI
                 }
                 else
                 {
-
+            
                     TooltipHandler.TipRegion(
                         labelRect
                         , UIText.DragToReorder.TranslateSimple() + Environment.NewLine + UIText.RigthClickForMoreOptions.TranslateSimple());
                 }
             }
+
+            Text.WordWrap = true;
+            // Draw icon.
+            if (groupSelector.AllowedThing.DrawMatSingle != null && groupSelector.AllowedThing.DrawMatSingle.mainTexture != null)
+                widgetRow.DefIcon(groupSelector.AllowedThing);
         }
 
         /// <summary>
