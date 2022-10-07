@@ -63,21 +63,11 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref">
-      <Version>1.3.3087</Version>
+      <Version>1.4.3509-beta</Version>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)SolutionItems\GlobalEditorFiles.props" Condition="Exists('$(SolutionDir)SolutionItems\GlobalEditorFiles.props')" />
-  <PropertyGroup>
-    <PostBuildEvent>
-            call "$(SolutionDir)SolutionItems\Deploy.bat" "$(ProjectDir)" "$(OutDir)" $(Configuration)
-            xcopy /i /e /d /y "$(SolutionDir)src\About" "$(OutDir)..\..\About"
-        </PostBuildEvent>
-  </PropertyGroup>
-  <Target Name="CopyLoadFolderXML" AfterTargets="Build">
-    <Copy SourceFiles="$(SolutionDir)src\LoadFolders.xml" DestinationFiles="$(OutDir)..\..\LoadFolders.xml" SkipUnchangedFiles="false">
-    </Copy>
-  </Target>
   <Target Name="CopyRimWorldUtility" AfterTargets="Build">
     <Copy Condition=" '$(Configuration)'=='debug' " SourceFiles="C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AwsomeInventory\References\NotooShabby.RimWorldUtility.dll" DestinationFiles="$(OutDir)NotooShabby.RimWorldUtility.dll">
     </Copy>
