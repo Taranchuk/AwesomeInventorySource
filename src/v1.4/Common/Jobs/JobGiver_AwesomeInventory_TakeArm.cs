@@ -3,10 +3,10 @@
 // Licensed under the LGPL-3.0-only license. See LICENSE.md file in the project root for full license information.
 // </copyright>
 
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RimWorld;
 using Verse;
 using Verse.AI;
 using Verse.Sound;
@@ -28,9 +28,6 @@ namespace AwesomeInventory.Jobs
         /// <returns> A job assigned to <paramref name="pawn"/>. </returns>
         public override Job TryGiveJob(Pawn pawn)
         {
-#if DEBUG
-            Log.Message(pawn.Name + "Take arm");
-#endif
             if (!AwesomeInventoryMod.Settings.AutoEquipWeapon)
             {
                 return null;
@@ -72,14 +69,7 @@ namespace AwesomeInventory.Jobs
 
             if (_parent == null)
             {
-                if (parent is JobGiver_FindItemByRadius p)
-                {
-                    _parent = p;
-                }
-                else
-                {
-                    throw new InvalidOperationException(ErrorText.WrongTypeParentThinkNode);
-                }
+                _parent = parent is JobGiver_FindItemByRadius p ? p : throw new InvalidOperationException(ErrorText.WrongTypeParentThinkNode);
             }
 
             bool isBrawler = pawn.story?.traits?.HasTrait(TraitDefOf.Brawler) ?? false;
@@ -135,15 +125,10 @@ namespace AwesomeInventory.Jobs
                 Thing closestWeapon = _parent.FindItem(
                     pawn
                     , pawn.Map.listerThings.ThingsInGroup(ThingRequestGroup.Weapon)
-                    , this.Validator
+                    , Validator
                     , (Thing x) => preferRanged ? (x.def.IsRangedWeapon ? 2f : 1f) : (x.def.IsMeleeWeapon ? 2f : 1f));
 
-                if (closestWeapon == null)
-                {
-                    return null;
-                }
-
-                return new Job(AwesomeInventory_JobDefOf.AwesomeInventory_MapEquip, closestWeapon);
+                return closestWeapon == null ? null : new Job(AwesomeInventory_JobDefOf.AwesomeInventory_MapEquip, closestWeapon);
             }
 
             return null;
@@ -180,7 +165,9 @@ namespace AwesomeInventory.Jobs
 
             pawn.equipment.GetDirectlyHeldThings().TryAddOrTransfer(newEq);
             if (newEq.def.soundInteract != null)
+            {
                 newEq.def.soundInteract.PlayOneShot(new TargetInfo(pawn.Position, pawn.MapHeld, false));
+            }
         }
     }
 }

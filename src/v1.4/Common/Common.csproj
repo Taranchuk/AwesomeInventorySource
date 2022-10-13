@@ -21,7 +21,7 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\AwesomeInventory\v1.4\Common\Assemblies\</OutputPath>
+    <OutputPath>..\..\..\..\AwesomeInventory\1.4\Base\Assemblies\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -316,14 +316,5 @@
   <ItemGroup>
     <Publicize Include="Assembly-CSharp" />
   </ItemGroup>
-  <PropertyGroup>
-    <PostBuildEvent>call $(SolutionDir)SolutionItems\Deploy.bat $(ProjectDir) $(OutDir) $(Configuration)
-
-IF "$(ConfigurationName)"=="Release" (
-    RD /s /q $(Outdir)..\..\test
-)
-
-del $(Outdir)0Harmony.dll</PostBuildEvent>
-  </PropertyGroup>
   <Import Project="$(SolutionDir)SolutionItems\GlobalEditorFiles.props" Condition="Exists('$(SolutionDir)SolutionItems\GlobalEditorFiles.props')" />
 </Project>

@@ -3,9 +3,6 @@
 // Licensed under the LGPL-3.0-only license. See LICENSE.md file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using AwesomeInventory.Jobs;
 using RimWorld;
 using Verse;
 
@@ -29,15 +26,6 @@ namespace AwesomeInventory.Loadout
                             && ((pawn.TryGetComp<CompAwesomeInventoryLoadout>()?.NeedRestock ?? false)
                                 ||
                                 (pawn.equipment.Primary == null && AwesomeInventoryMod.Settings.AutoEquipWeapon));
-#if DEBUG
-            Log.Message(
-                string.Format(
-                    System.Globalization.CultureInfo.InvariantCulture,
-                    "[{0}] {1}:: Need restock: {2}",
-                    DateTime.Now.ToLongTimeString(),
-                    nameof(ThinkNode_AwesomeInventory_Core),
-                    needRestock));
-#endif
             return needRestock;
         }
     }

@@ -3,16 +3,12 @@
 // Licensed under the LGPL-3.0-only license. See LICENSE.md file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using AwesomeInventory.Jobs;
-using AwesomeInventory.Resources;
 using AwesomeInventory.UI;
 using HarmonyLib;
 using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -40,7 +36,6 @@ namespace AwesomeInventory.Common.HarmonyPatches
         /// <param name="clickPos"> Position of the mouse when right-click. </param>
         /// <param name="pawn"> Currently focused pawn. </param>
         /// <param name="opts"> Options displayed in context menu. </param>
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Harmony patch")]
         public static void Postfix(Vector3 clickPos, Pawn pawn, List<FloatMenuOption> opts)
         {
             IntVec3 position = IntVec3.FromVector3(clickPos);

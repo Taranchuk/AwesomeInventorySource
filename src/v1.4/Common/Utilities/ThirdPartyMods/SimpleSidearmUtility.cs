@@ -3,55 +3,32 @@
 // Licensed under the LGPL-3.0-only license. See LICENSE.md file in the project root for full license information.
 // </copyright>
 
+using HarmonyLib;
 using System;
-using System.CodeDom;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Verse;
-
 namespace AwesomeInventory
 {
-    /// <summary>
-    /// Utility support for Simple Sidearm.
-    /// </summary>
+    [StaticConstructorOnStartup]
     public static class SimpleSidearmUtility
     {
-        private const string _assemblyName = "SimpleSidearms";
-
-        [SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "Lower case is required.")]
-        private static string _packageID = "PeteTimesSix.SimpleSidearms".ToLowerInvariant();
-
-        private static Type _compSidearmMemory;
-        private static PropertyInfo _pawnMemory;
-        private static MethodInfo _toThingDefStuffDefPair;
-        private static MethodInfo _forgetSidearmMemory;
-
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Handled by Log.Error")]
+        private static readonly string _packageID = "PeteTimesSix.SimpleSidearms".ToLowerInvariant();
+        private static readonly Type _compSidearmMemory;
+        private static readonly PropertyInfo _pawnMemory;
+        private static readonly MethodInfo _toThingDefStuffDefPair;
+        private static readonly MethodInfo _forgetSidearmMemory;
         static SimpleSidearmUtility()
         {
             IsActive = LoadedModManager.RunningModsListForReading.Any(m => m.PackageId == _packageID);
             if (IsActive)
             {
-                Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == _assemblyName);
-                if (assembly != null)
-                {
-                    try
-                    {
-                        _compSidearmMemory = assembly.GetType("SimpleSidearms.rimworld.CompSidearmMemory");
-                        _pawnMemory = _compSidearmMemory.GetProperty("RememberedWeapons", BindingFlags.Public | BindingFlags.Instance);
-                        _toThingDefStuffDefPair = assembly.GetType("SimpleSidearms.Extensions").GetMethod("toThingDefStuffDefPair", BindingFlags.Static | BindingFlags.Public);
-                        _forgetSidearmMemory = _compSidearmMemory.GetMethod("ForgetSidearmMemory", BindingFlags.Public | BindingFlags.Instance);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error(e.ToString());
-                    }
-                }
+                _compSidearmMemory = AccessTools.TypeByName("SimpleSidearms.rimworld.CompSidearmMemory");
+                _pawnMemory = _compSidearmMemory.GetProperty("RememberedWeapons", BindingFlags.Public | BindingFlags.Instance);
+                _toThingDefStuffDefPair = AccessTools.TypeByName("PeteTimesSix.SimpleSidearms.Extensions")
+                    .GetMethod("toThingDefStuffDefPair", BindingFlags.Static | BindingFlags.Public);
+                _forgetSidearmMemory = _compSidearmMemory.GetMethod("ForgetSidearmMemory", BindingFlags.Public | BindingFlags.Instance);
             }
         }
 

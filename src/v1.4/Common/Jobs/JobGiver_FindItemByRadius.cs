@@ -3,12 +3,9 @@
 // Licensed under the GPL-3.0-only license. See LICENSE.md file in the project root for full license information.
 // </copyright>
 
+using RimWorld;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AwesomeInventory.Resources;
-using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -55,10 +52,7 @@ namespace AwesomeInventory.Jobs
         /// </summary>
         protected Func<Pawn, Thing, bool> _validatorBase = (Pawn p, Thing x) =>
         {
-            if (!EquipmentUtility.CanEquip(x, p))
-                return false;
-
-            return p.CanReserve(x) && !x.IsForbidden(p) && x.IsSociallyProper(p);
+            return EquipmentUtility.CanEquip(x, p) && p.CanReserve(x) && !x.IsForbidden(p) && x.IsSociallyProper(p);
         };
 
         /// <summary>
@@ -111,11 +105,6 @@ namespace AwesomeInventory.Jobs
                 {
                     ++searchLevel;
                 }
-#if DEBUG
-                Log.Message(string.Format(ErrorMessage.ExpectedString, nameof(_itemFound), true, _itemFound));
-                Log.Message(string.Format(ErrorMessage.ExpectedString, nameof(_lastUsedRadiusIndex), "-", _lastUsedRadiusIndex));
-                Log.Message(string.Format(ErrorMessage.ExpectedString, nameof(searchLevel), "-", searchLevel));
-#endif
             }
 
             Thing thing = null;
@@ -132,7 +121,7 @@ namespace AwesomeInventory.Jobs
                     , (Thing x) =>
                     {
                         Thing innerThing = x.GetInnerIfMinified();
-                        return _validatorBase(pawn, x) && (validator == null ? true : validator(innerThing));
+                        return _validatorBase(pawn, x) && (validator == null || validator(innerThing));
                     }
                     , priorityGetter);
                 if (thing == null)
@@ -145,16 +134,9 @@ namespace AwesomeInventory.Jobs
                 }
                 else
                 {
-#if DEBUG
-                    Log.Message(string.Format(ErrorMessage.ReportString, "Thing Found", thing.LabelCap, "-"));
-#endif
                     _itemFound = true;
                     break;
                 }
-#if DEBUG
-                Log.Message(string.Format(ErrorMessage.ReportString, "While loop end", nameof(searchLevel), searchLevel));
-                Log.Message(string.Format(ErrorMessage.ReportString, "While loop end", nameof(_lastUsedRadiusIndex), _lastUsedRadiusIndex));
-#endif
             }
 
             return thing;

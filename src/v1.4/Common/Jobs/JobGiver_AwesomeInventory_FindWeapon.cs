@@ -3,13 +3,10 @@
 // Licensed under the LGPL-3.0-only license. See LICENSE.md file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AwesomeInventory.Loadout;
 using RimWorld;
+using System;
+using System.Collections.Generic;
 using Verse;
 using Verse.AI;
 
@@ -29,10 +26,6 @@ namespace AwesomeInventory.Jobs
         /// <returns> A job assigned to <paramref name="pawn"/>. </returns>
         public override Job TryGiveJob(Pawn pawn)
         {
-#if DEBUG
-            ValidateArg.NotNull(pawn, nameof(pawn));
-            Log.Message(pawn.Name + "Looking for weapons");
-#endif
             if (CombatExtendedUtility.IsActive)
             {
                 return null;
@@ -74,14 +67,7 @@ namespace AwesomeInventory.Jobs
 
             if (_parent == null)
             {
-                if (parent is JobGiver_FindItemByRadius p)
-                {
-                    _parent = p;
-                }
-                else
-                {
-                    throw new InvalidOperationException(ErrorText.WrongTypeParentThinkNode);
-                }
+                _parent = parent is JobGiver_FindItemByRadius p ? p : throw new InvalidOperationException(ErrorText.WrongTypeParentThinkNode);
             }
 
             if (pawn.TryGetComp<CompAwesomeInventoryLoadout>() is CompAwesomeInventoryLoadout compLoadout)

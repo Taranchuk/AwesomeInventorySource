@@ -3,10 +3,10 @@
 // Licensed under the GPL-3.0-only license. See LICENSE.md file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Linq;
 using AwesomeInventory.Loadout;
 using RimWorld;
+using System;
+using System.Linq;
 using Verse;
 using Verse.AI;
 
@@ -27,25 +27,16 @@ namespace AwesomeInventory.Jobs
         public override Job TryGiveJob(Pawn pawn)
         {
             ValidateArg.NotNull(pawn, nameof(pawn));
-#if DEBUG
-            Log.Message(pawn.Name + " Looking for apparels");
-#endif
-
-            CompAwesomeInventoryLoadout ailoadout = ((ThingWithComps)pawn).TryGetComp<CompAwesomeInventoryLoadout>();
+            CompAwesomeInventoryLoadout ailoadout = pawn.TryGetComp<CompAwesomeInventoryLoadout>();
 
             if (ailoadout == null || !ailoadout.NeedRestock)
+            {
                 return null;
+            }
 
             if (_parent == null)
             {
-                if (parent is JobGiver_FindItemByRadius p)
-                {
-                    _parent = p;
-                }
-                else
-                {
-                    throw new InvalidOperationException(ErrorText.WrongTypeParentThinkNode);
-                }
+                _parent = parent is JobGiver_FindItemByRadius p ? p : throw new InvalidOperationException(ErrorText.WrongTypeParentThinkNode);
             }
 
             foreach (ThingGroupSelector groupSelector in ailoadout.ItemsToRestock.Select(p => p.Key))

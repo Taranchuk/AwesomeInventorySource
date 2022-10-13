@@ -63,7 +63,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <Optimize>false</Optimize>
     <Prefer32Bit>false</Prefer32Bit>
-    <OutputPath>..\..\..\..\AwesomeInventory\v1.4\CombatExtended\Assemblies\</OutputPath>
+    <OutputPath>..\..\..\..\AwesomeInventory\1.4\CombatExtended\Assemblies\</OutputPath>
     <DebugType>none</DebugType>
     <DocumentationFile>
     </DocumentationFile>

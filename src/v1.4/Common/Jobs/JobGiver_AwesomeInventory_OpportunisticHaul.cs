@@ -3,10 +3,10 @@
 // Licensed under the LGPL-3.0-only license. See LICENSE.md file in the project root for full license information.
 // </copyright>
 
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -26,19 +26,9 @@ namespace AwesomeInventory.Jobs
         /// <returns> A potential job for <paramref name="pawn"/>. </returns>
         public override Job TryGiveJob(Pawn pawn)
         {
-#if DEBUG
-            Log.Message(pawn.Name + "Looking for things to haul");
-#endif
             if (_parent == null)
             {
-                if (parent is JobGiver_FindItemByRadius p)
-                {
-                    _parent = p;
-                }
-                else
-                {
-                    throw new InvalidOperationException(ErrorText.WrongTypeParentThinkNode);
-                }
+                _parent = parent is JobGiver_FindItemByRadius p ? p : throw new InvalidOperationException(ErrorText.WrongTypeParentThinkNode);
             }
 
             if (_parent.Itemfound)
