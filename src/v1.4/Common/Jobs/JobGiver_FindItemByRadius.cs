@@ -153,12 +153,6 @@ namespace AwesomeInventory.Jobs
             _radius.Add(Mathf.FloorToInt(mapSize * _tinyRadiusFactor));
             _radius.Add(Mathf.FloorToInt(mapSize * _smallRadiusFactor));
             _radius.Add(Mathf.FloorToInt(mapSize * _mediumRadiusFactor));
-#if DEBUG
-            foreach (int radius in _radius)
-            {
-                Log.Message(string.Concat(nameof(radius), ": ", radius));
-            }
-#endif
         }
     }
 }

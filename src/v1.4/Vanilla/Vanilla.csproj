@@ -23,7 +23,7 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\AwesomeInventory\Common\Assemblies\</OutputPath>
+    <OutputPath>..\..\..\..\AwesomeInventory\1.4\Common\Assemblies\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -81,8 +81,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="NotooShabby.RimWorldUtility">
-      <HintPath>..\..\..\..\SmartColonistBar\References\NotooShabby.RimWorldUtility.dll</HintPath>
+    <Reference Include="NotooShabby.RimWorldUtility, Version=1.0.7507.42509, Culture=neutral, PublicKeyToken=f5192c23e7aedbef, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\References\NotooShabby.RimWorldUtility.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
