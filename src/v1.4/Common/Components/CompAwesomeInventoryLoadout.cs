@@ -529,6 +529,9 @@ namespace AwesomeInventory.Loadout
 
             void StartUndressJobs(IEnumerable<Apparel> apparels, Pawn pawn)
             {
+                if (pawn?.jobs is null)
+                    return;
+
                 if (!delay)
                     pawn.jobs.StopAll(true);
 
