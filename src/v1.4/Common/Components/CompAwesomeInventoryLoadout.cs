@@ -537,11 +537,14 @@ namespace AwesomeInventory.Loadout
 
                 foreach (Apparel apparel in apparels)
                 {
-                    Job job = JobMaker.MakeJob(AwesomeInventory_JobDefOf.AwesomeInventory_Undress, apparel);
-                    if (pawn.CurJob == null)
-                        pawn.jobs.StartJob(job);
-                    else
-                        pawn.jobs.jobQueue.EnqueueLast(job);
+                    if (apparel != null)
+                    {
+                        Job job = JobMaker.MakeJob(AwesomeInventory_JobDefOf.AwesomeInventory_Undress, apparel);
+                        if (pawn.CurJob == null)
+                            pawn.jobs.StartJob(job);
+                        else
+                            pawn.jobs.jobQueue.EnqueueLast(job);
+                    }
                 }
             }
         }
