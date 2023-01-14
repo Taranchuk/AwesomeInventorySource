@@ -9,6 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
 using AwesomeInventory.Loadout;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -788,7 +789,10 @@ namespace AwesomeInventory.UI
                 label = str.TranslateSimple(),
                 defName = str,
             };
-            DefUtility.GiveShortHash.Invoke(null, new object[] { newDef, typeof(StatDef) });
+
+            var takenHashes = Traverse.Create(typeof(ShortHashGiver)).Field<Dictionary<Type, HashSet<ushort>>>("takenHashesPerDeftype");
+
+            DefUtility.GiveShortHash.Invoke(null, new object[] { newDef, typeof(StatDef), takenHashes.Value[typeof(StatDef)] });
             return newDef;
         }
 

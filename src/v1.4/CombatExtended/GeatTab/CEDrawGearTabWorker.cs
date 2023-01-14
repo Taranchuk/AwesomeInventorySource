@@ -14,13 +14,13 @@ using Verse;
 
 namespace AwesomeInventory.UI
 {
-    public class AwesomeInventoryTab : AwesomeInventoryTabBase
+    public class CEAwesomeInventoryTab : AwesomeInventoryTabBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AwesomeInventoryTab"/> class.
+        /// Initializes a new instance of the <see cref="CEAwesomeInventoryTab"/> class.
         /// </summary>
         [Obsolete(ErrorText.NoDirectCall, false)]
-        public AwesomeInventoryTab()
+        public CEAwesomeInventoryTab()
         {
             _drawGearTab = new CEDrawGearTabWorker(this);
         }
